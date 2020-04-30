@@ -11,14 +11,12 @@ def get_abs_path(file_name):
 
 app = Flask(__name__, template_folder=get_abs_path('templates'))
 
-URL = 'http://shibe.online/api/shibes?count=1&httpsUrls=true'
-
 @app.route('/', methods = ['GET'])
 def index():
     try:
         count = request.args.get('count', default=1, type=int)
         if count > 100:
-            count = 1
+            count = 1 # let's not get too carried away
 
         shibes = requests.get(
                 f'http://shibe.online/api/shibes?count={count}&httpsUrls=true',
@@ -27,7 +25,7 @@ def index():
         return render_template(
                 'index.html',
                 shibes=shibes
-                )
+            )
     except Exception as e:
         print(e)
         return abort(500)
