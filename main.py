@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask, render_template, abort
+from flask import Flask, request, render_template, abort
 import requests
 
 import os
@@ -16,10 +16,17 @@ URL = 'http://shibe.online/api/shibes?count=1&httpsUrls=true'
 @app.route('/', methods = ['GET'])
 def index():
     try:
-        shibe = requests.get(URL, timeout=5).json()
+        count = request.args.get('count', default=1, type=int)
+        if count > 100:
+            count = 1
+
+        shibes = requests.get(
+                f'http://shibe.online/api/shibes?count={count}&httpsUrls=true',
+                timeout=5
+                ).json()
         return render_template(
                 'index.html',
-                shibe=shibe[0]
+                shibes=shibes
                 )
     except Exception as e:
         print(e)

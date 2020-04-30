@@ -5,7 +5,9 @@
   </head>
   <body>
     <div id="shibe-content">
-      <img src="{{ shibe }}" />
+      {% for shibe in shibes: %}
+        <img src="{{ shibe }}" />
+      {% endfor %}
     </div>
   </body>
 </html>
